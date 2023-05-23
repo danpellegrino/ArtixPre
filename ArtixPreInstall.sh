@@ -25,6 +25,11 @@ welcomemsg() {
 		--yesno "Be sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
 }
 
+adddisk() {
+	disk=$(whiptail --inputbox "First enter the disk you'd like to install Artix on." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+}
+
+
 ### THE ACTUAL SCRIPT ###
 
 pacman --noconfirm --needed -Sy libnewt ||
