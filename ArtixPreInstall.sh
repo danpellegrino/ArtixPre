@@ -30,10 +30,20 @@ runitcheck() {
 	{ pstree | grep runsv >/dev/null 2>&1; }
 }
 
-adddisk() {
-	disk=$(whiptail --inputbox "First enter the disk you'd like to install Artix on." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+selectdisk() {
+	depth=$(lsblk | grep 'disk' | wc -l)
+	local DISKS=()
+	for d in $(lsblk | grep disk | awk '{printf "%s\n%s \\\n",$1,$4}'); do
+		DISKS+=("$d")
+	done
+	whiptail --title "Select Disk" \
+		--radiolist " Your Installation Disk: " 20 70 "$depth" \
+		"${DISKS[@]}" 3>&1 1>&2 2>&3
 }
 
+setupdisk(){
+    device=$(selectdisk)
+}
 
 ### THE ACTUAL SCRIPT ###
 
@@ -45,3 +55,4 @@ welcomemsg || error "User exited."
 
 runitcheck || error "runit not detected."
 
+setupdisk || error "Error selecting disk."
