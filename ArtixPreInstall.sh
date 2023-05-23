@@ -25,6 +25,11 @@ welcomemsg() {
 		--yesno "Be sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
 }
 
+# Verify user is using the runit init system
+runitcheck() {
+	{ pstree | grep runsv >/dev/null 2>&1; }
+}
+
 adddisk() {
 	disk=$(whiptail --inputbox "First enter the disk you'd like to install Artix on." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
 }
@@ -37,3 +42,6 @@ pacman --noconfirm --needed -Sy libnewt ||
 
 # Welcome user
 welcomemsg || error "User exited."
+
+runitcheck || error "runit not detected."
+
