@@ -128,7 +128,8 @@ encryptdisk(){
 
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
-	mkfs.fat -F32 /dev/$device"1"
+	mkfs.fat -F 32 /dev/$device"1"
+	fatlabel /dev/$device"1" ESP
 	encryptdisk
 	echo $encryptpass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART -
 	unset encryptpass1 encryptpass2
@@ -148,6 +149,7 @@ mountdisk(){
 	mount -o compress=zstd:1,noatime,subvol=@home /dev/mapper/$CRYPT_PART /mnt/home
 	mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/mapper/$CRYPT_PART /mnt/.snapshots
 	mount -o compress=zstd:1,noatime,subvol=@var /dev/mapper/$CRYPT_PART /mnt/var
+
 
 	mount /dev/$device"1" /mnt/boot/efi
 }
