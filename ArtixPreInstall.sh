@@ -159,7 +159,7 @@ formatdisk
 mountdisk
 
 # Update the best mirrors
-#updatemirrors
+updatemirrors
 
 # Perform Installation
 installloop
