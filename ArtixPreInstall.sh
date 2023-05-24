@@ -164,9 +164,19 @@ encrypthooks(){
 
 generatefstab(){
 	# clear
-	genfstab -U /mnt >> /mnt/etc/fstab
+	fstabgen -U /mnt >> /mnt/etc/fstab
 
 	sleep 3
+}
+
+setupgrub(){
+	cryptdevice=$(blkid -s UUID -o value /dev/$device"2")
+	rootdevice=$(blkid -s UUID -o value /dev/mapper/artix_crypt)
+
+	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet cryptdevice=UUID='"$cryptdevice"':cryptlvm root=UUID='"$rootdevice"'\"/g' /mnt/etc/default/grub
+
+	mkdir /mnt/boot/efi
+	artix-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -215,3 +225,5 @@ artix-chroot /mnt passwd
 encrypthooks # Sets up encrypt + lvm2 hooks
 
 generatefstab # Generates fstab file
+
+setupgrub # Sets up grub with encrypted partitions
