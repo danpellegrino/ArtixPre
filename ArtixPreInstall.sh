@@ -171,7 +171,7 @@ generatefstab(){
 
 setupgrub(){
 	cryptdevice=$(blkid -s UUID -o value /dev/$device"2")
-	rootdevice=$(blkid -s UUID -o value /dev/mapper/artix_crypt)
+	rootdevice=$(blkid -s UUID -o value /dev/mapper/$CRYPT_PART)
 
 	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet cryptdevice=UUID='"$cryptdevice"':cryptlvm root=UUID='"$rootdevice"'\"/g' /mnt/etc/default/grub
 
