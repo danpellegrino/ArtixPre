@@ -218,7 +218,7 @@ setlocale # Setting locale
 sethostname # Setting hostname
 
 # Enable the network manager
-ln -s /mnt/etc/runit/sv/NetworkManager /mnt/etc/runit/runsvdir/current
+artix-chroot /mnt ln -s /etc/runit/sv/NetworkManager /etc/runit/runsvdir/current
 
 # Setup Root Password
 artix-chroot /mnt passwd
