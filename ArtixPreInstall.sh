@@ -74,7 +74,6 @@ preinstallmsg() {
 wipedisk(){
 	wipefs -af /dev/$device[1-9]* # wipe old partitions
 	wipefs -af /dev/$device       # wipe the disk itself
-	parted /dev/$device          # create new partitions
 	wipefs -af /dev/$device[1-9]* # wipe the new partitions, just in case
 }
 
@@ -100,6 +99,12 @@ unmountdisk(){
 	umount /dev/$device"1"
 	umount /dev/mapper/$CRYPT_PART
 	cryptsetup luksClose /dev/mapper/$CRYPT_PART
+}
+
+updatemirrors(){
+	installpkg "pacman-contrib"
+	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup
+	rankmirrors -v -n 5 /etc/pacman.d/mirrorlist-backup > /etc/pacman.d/mirrorlist
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -131,3 +136,6 @@ formatdisk
 
 # Mount the selected disk
 mountdisk
+
+# Update the best mirrors
+updatemirrors
