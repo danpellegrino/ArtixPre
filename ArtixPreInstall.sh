@@ -72,10 +72,10 @@ preinstallmsg() {
 }
 
 wipedisk(){
-	wipefs -a /dev/$device[1-9]* # wipe old partitions
-	wipefs -a /dev/$device       # wipe the disk itself
+	wipefs -af /dev/$device[1-9]* # wipe old partitions
+	wipefs -af /dev/$device       # wipe the disk itself
 	parted /dev/$device          # create new partitions
-	wipefs -a /dev/$device[1-9]* # wipe the new partitions, just in case
+	wipefs -af /dev/$device[1-9]* # wipe the new partitions, just in case
 }
 
 encryptdisk(){
@@ -86,14 +86,20 @@ formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
 	mkfs.fat -F32 /dev/$device"1"
 	encryptdisk
-	cryptsetup open /dev/$device"2" $CRYPT_PART # User will enter encryption password
+	cryptsetup luksOpen /dev/$device"2" $CRYPT_PART # User will enter encryption password
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
 mountdisk(){
-	mount /dev/mapper/$CRYPT_PART
+	mount /dev/mapper/$CRYPT_PART /mnt
 	mkdir /mnt/boot
 	mount /dev/$device"1" /mnt/boot/
+}
+
+unmountdisk(){
+	umount /dev/$device"1"
+	umount /dev/mapper/$CRYPT_PART
+	cryptsetup luksClose /dev/mapper/$CRYPT_PART
 }
 
 ### THE ACTUAL SCRIPT ###
