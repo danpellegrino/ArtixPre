@@ -52,9 +52,9 @@ setupdisk(){
 }
 
 preinstallmsg() {
-	whiptail --title "Final Warning!" --yes-button "All good!" \
+	whiptail --title "Final Warnings!" --yes-button "All good!" \
 		--no-button "No wait!" \
-		--yesno "The rest of the installation will now be totally automated! But as a pre-caution this script is intended for systems that have yet to be set up yet, please perform this on the Artix Linux iso install.\\n\\nWARNING: All data on /dev/$(device) will be wiped going onwards." 13 60 || {
+		--yesno "The rest of the installation will now be totally automated!\n\nWARNING: This script is intended for systems that have yet to be set up yet, please perform this on the Artix Linux iso install.\\n\\nWARNING: All data on /dev/$device will be wiped going onwards." 13 60 || {
 		clear
 		exit 1
 	}
