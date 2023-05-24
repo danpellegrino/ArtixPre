@@ -262,6 +262,10 @@ wipedisk
 
 getencryptionpass
 
+getrootpass
+
+getuserandpass
+
 formatdisk
 
 mountdisk
