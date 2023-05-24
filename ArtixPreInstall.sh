@@ -90,6 +90,12 @@ formatdisk(){
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
+mountdisk(){
+	mount /dev/mapper/$CRYPT_PART
+	mkdir /mnt/boot
+	mount /dev/$device"1" /mnt/boot/
+}
+
 ### THE ACTUAL SCRIPT ###
 
 # Download libnewt (to use whiptail)
@@ -116,3 +122,6 @@ wipedisk
 
 # Format the selected disk
 formatdisk
+
+# Mount the selected disk
+mountdisk
