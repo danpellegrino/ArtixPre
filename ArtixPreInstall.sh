@@ -79,7 +79,7 @@ wipedisk(){
 }
 
 encryptdisk(){
-	echo -e "YES" | cryptsetup luksFormat /dev/$device"2" # User may enter their encryption password
+	cryptsetup luksFormat /dev/$device"2" # User may enter their encryption password
 }
 
 formatdisk(){
