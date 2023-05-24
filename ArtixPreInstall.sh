@@ -139,8 +139,8 @@ setlocale(){
 	LOCALE=${LOCALE:="en_US.UTF-8"}
 	sleep 2
 
-	arch-chroot /mnt sed -i "s/#$LOCALE/$LOCALE/g" /etc/locale.gen
-	arch-chroot /mnt locale-gen
+	artix-chroot /mnt sed -i "s/#$LOCALE/$LOCALE/g" /etc/locale.gen
+	artix-chroot /mnt locale-gen
 
 	echo "export LANG=$LOCALE" > /mnt/etc/locale.conf 
 	echo "export LC_COLLATE=\"C\"" >> /mnt/etc/locale.conf
@@ -182,5 +182,7 @@ updatemirrors # Update the best mirrors
 installloop # Perform Installation
 
 settimezone # Setting timezone
+
+setlocale # Setting locale
 
 sethostname # Setting hostname
