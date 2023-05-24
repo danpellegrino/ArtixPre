@@ -51,14 +51,24 @@ setupdisk(){
     device=$(selectdisk)
 }
 
-### THE ACTUAL SCRIPT ###
+preinstallmsg() {
+	whiptail --title "Final Warning!" --yes-button "All good!" \
+		--no-button "No wait!" \
+		--yesno "The rest of the installation will now be totally automated! But as a pre-caution this script is intended for systems that have yet to be set up yet, please perform this on the Artix Linux iso install.\\n\\nWARNING: All data on /dev/$(device) will be wiped going onwards." 13 60 || {
+		clear
+		exit 1
+	}
+}
 
-# Check if using is on GPT disktable
-efi_boot_mode || error "Please run this script only on a GPT disktable."
+
+### THE ACTUAL SCRIPT ###
 
 # Download libnewt (to use whiptail)
 pacman --noconfirm --needed -Sy libnewt ||
 	error "Are you sure you're running this as the root user, are on an Arch-based distribution and have an internet connection?"
+
+# Check if using is on GPT disktable
+efi_boot_mode || error "Please run this script only on a GPT disktable."
 
 # Welcome user
 welcomemsg || error "User exited."
@@ -68,3 +78,6 @@ runitcheck || error "This script is intended to be used on a runit based init sy
 
 # Select disk to install on
 setupdisk || error "Error selecting disk."
+
+# Last chance for user to back out before install.
+preinstallmsg || error "User exited."
