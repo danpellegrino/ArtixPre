@@ -79,7 +79,7 @@ wipedisk(){
 }
 
 formatdisk(){
-	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/sda
+	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
 }
 
 ### THE ACTUAL SCRIPT ###
