@@ -84,24 +84,51 @@ wipedisk(){
 
 getencryptionpass() {
 	# Prompts user for encryption password
-	pass1=$(whiptail --nocancel --passwordbox "Enter an encryption password." 10 60 3>&1 1>&2 2>&3 3>&1)
-	pass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
-	while ! [ "$pass1" = "$pass2" ]; do
-		unset pass2
-		pass1=$(whiptail --nocancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
-		pass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	encryptpass1=$(whiptail --nocancel --passwordbox "Enter an encryption password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	encryptpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	while ! [ "$encryptpass1" = "$encryptpass2" ]; do
+		unset encryptpass2
+		encryptpass1=$(whiptail --nocancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
+		encryptpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+}
+
+getrootpass() {
+	# Prompts user for new username an password.
+	rootpass1=$(whiptail --nocancel --passwordbox "Enter a password for the root user." 10 60 3>&1 1>&2 2>&3 3>&1)
+	rootpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	while ! [ "$rootpass1" = "$rootpass2" ]; do
+		unset rootpass2
+		rootpass1=$(whiptail --nocancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
+		rootpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+}
+
+getuserandpass() {
+	# Prompts user for new username an password.
+	username=$(whiptail --inputbox "First, please enter a name for the user account." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+	while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
+		username=$(whiptail --nocancel --inputbox "Username not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+	userpass1=$(whiptail --nocancel --passwordbox "Enter a password for that user." 10 60 3>&1 1>&2 2>&3 3>&1)
+	userpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	while ! [ "$userpass1" = "$userpass2" ]; do
+		unset userpass2
+		userpass1=$(whiptail --nocancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
+		userpass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
 	done
 }
 
 encryptdisk(){
-	echo -n $pass1 | cryptsetup luksFormat /dev/$device"2" - # User may enter their encryption password
+	echo -n $encryptpass1 | cryptsetup luksFormat /dev/$device"2" - # User may enter their encryption password
 }
 
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
 	mkfs.fat -F32 /dev/$device"1"
 	encryptdisk
-	echo $pass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART - # User will enter encryption password
+	echo $encryptpass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART - # User will enter encryption password
+	unset encryptpass1 encryptpass2
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
@@ -166,6 +193,24 @@ cat > /mnt/etc/hosts <<HOSTS
 ::1            localhost
 127.0.1.1      $HOSTNAME.localdomain     $HOSTNAME
 HOSTS
+}
+
+setrootpass() {
+	# Setting root password
+	whiptail --infobox "Seeting root password" 7 50
+
+	artix-chroot /mnt echo "root:$rootpass1" | chpasswd
+	unset rootpass1 rootpass2
+}
+
+
+adduserandpass() {
+	# Adds user `$username` with password $userpass1.
+	whiptail --infobox "Adding user \"$username\"..." 7 50
+
+	artix-chroot /mnt useradd -G wheel "$username" >/dev/null 2>&1 ||
+	artix-chroot /mnt echo "$username:$userpass1" | chpasswd
+	unset userpass1 userpass2
 }
 
 encrypthooks(){
@@ -235,7 +280,9 @@ sethostname # Setting hostname
 artix-chroot /mnt ln -s /etc/runit/sv/NetworkManager /etc/runit/runsvdir/current
 
 # Setup Root Password
-artix-chroot /mnt passwd
+setrootpass
+
+adduserandpass # Adds user entered earlier
 
 encrypthooks # Sets up encrypt + lvm2 hooks
 
