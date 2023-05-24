@@ -79,14 +79,14 @@ wipedisk(){
 }
 
 encryptdisk(){
-	echo -e "YES" | cryptsetup luksFormat /dev/$device2 # User may enter their encryption password
+	echo -e "YES" | cryptsetup luksFormat /dev/$device"2" # User may enter their encryption password
 }
 
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
-	mkfs.fat -F32 /dev/$device1
+	mkfs.fat -F32 /dev/$device"1"
 	encryptdisk
-	cryptsetup open /dev/$device2 $CRYPT_PART # User will enter encryption password
+	cryptsetup open /dev/$device"2" $CRYPT_PART # User will enter encryption password
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
