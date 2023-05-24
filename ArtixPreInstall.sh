@@ -6,6 +6,12 @@
 
 ### FUNCTIONS ###
 
+efi_boot_mode(){
+    # if the efivars directory exists we definitely have an EFI BIOS
+    # otherwise, we could have a non-standard EFI or even an MBR-only system
+    ( $(ls /sys/firmware/efi/efivars &>/dev/null) && return 0 ) || return 1
+}
+
 installpkg() {
 	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
 }
@@ -47,12 +53,18 @@ setupdisk(){
 
 ### THE ACTUAL SCRIPT ###
 
+# Check if using is on GPT disktable
+efi_boot_mode || error "Please run this script only on a GPT disktable."
+
+# Download libnewt (to use whiptail)
 pacman --noconfirm --needed -Sy libnewt ||
 	error "Are you sure you're running this as the root user, are on an Arch-based distribution and have an internet connection?"
 
 # Welcome user
 welcomemsg || error "User exited."
 
-runitcheck || error "runit not detected."
+# Verify the user is using the runit init system
+runitcheck || error "This script is intended to be used on a runit based init system."
 
+# Select disk to install on
 setupdisk || error "Error selecting disk."
