@@ -110,12 +110,9 @@ updatemirrors(){
 	rankmirrors -v -n 5 /etc/pacman.d/mirrorlist-backup > /etc/pacman.d/mirrorlist
 }
 
-basestrapping(){
-	whiptail --title "Installation" --infobox "Strapping \`$1\` ($n of $total) to /mnt. $1 $2" 9 70
-	basestrap -i /mnt "$1"
-}
-
 installloop(){
+	progs=''
+
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) ||
 		curl -Ls "$progsfile" | sed '/^#/d' >/tmp/progs.csv
 	total=$(wc -l </tmp/progs.csv)
@@ -124,9 +121,11 @@ installloop(){
 		echo "$comment" | grep -q "^\".*\"$" &&
 			comment="$(echo "$comment" | sed -E "s/(^\"|\"$)//g")"
 		case "$tag" in
-		*) basestrapping "$program" "$comment" ;;
+		*) progs+="$program " ;;
 		esac
 	done </tmp/progs.csv
+
+	echo $progs
 }
 
 ### THE ACTUAL SCRIPT ###
