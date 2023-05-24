@@ -137,8 +137,19 @@ formatdisk(){
 
 mountdisk(){
 	mount /dev/mapper/$CRYPT_PART /mnt
-	mkdir /mnt/boot
-	mount /dev/$device"1" /mnt/boot/
+	btrfs su cr /mnt/@
+	btrfs su cr /mnt/@home
+	btrfs su cr /mnt/@snapshots
+	btrfs su cr /mnt/@var
+	umount /mnt
+	mount -o compress=zstd:1,noatime,subvol=@ /dev/mapper/$CRYPT_PART /mnt
+	mkdir -p /mnt/{boot/efi,home,.snapshots,var}
+
+	mount -o compress=zstd:1,noatime,subvol=@home /dev/mapper/$CRYPT_PART /mnt/home
+	mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/mapper/$CRYPT_PART /mnt/.snapshots
+	mount -o compress=zstd:1,noatime,subvol=@var /dev/mapper/$CRYPT_PART /mnt/var
+
+	mount /dev/$device"1" /mnt/boot/efi
 }
 
 unmountdisk(){
