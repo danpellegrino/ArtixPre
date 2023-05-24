@@ -46,6 +46,7 @@ welcomemsg() {
 		--yesno "Be sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
 }
 
+
 # Verify user is using the runit init system
 runitcheck() {
 	{ pstree | grep runsv >/dev/null 2>&1; }
@@ -81,15 +82,26 @@ wipedisk(){
 	wipefs -af /dev/$device[1-9]* # wipe the new partitions, just in case
 }
 
+getencryptionpass() {
+	# Prompts user for encryption password
+	pass1=$(whiptail --nocancel --passwordbox "Enter an encryption password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	pass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	while ! [ "$pass1" = "$pass2" ]; do
+		unset pass2
+		pass1=$(whiptail --nocancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
+		pass2=$(whiptail --nocancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+}
+
 encryptdisk(){
-	cryptsetup luksFormat /dev/$device"2" # User may enter their encryption password
+	echo -n $pass1 | cryptsetup luksFormat /dev/$device"2" - # User may enter their encryption password
 }
 
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
 	mkfs.fat -F32 /dev/$device"1"
 	encryptdisk
-	cryptsetup luksOpen /dev/$device"2" $CRYPT_PART # User will enter encryption password
+	echo $pass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART - # User will enter encryption password
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
@@ -202,6 +214,8 @@ setupdisk || error "Error selecting disk."
 preinstallmsg || error "User exited."
 
 wipedisk
+
+getencryptionpass
 
 formatdisk
 
