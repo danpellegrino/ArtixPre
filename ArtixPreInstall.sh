@@ -4,6 +4,9 @@
 # by Daniel Pellegrino
 # License: GNU GPLv3
 
+### PROGRAMS FILE (CONTAINS ALL PROGRAMS THAT WILL BE INSTALLED) ###
+
+
 ### VOLUME GROUP VARIABLES ###
 CRYPT_PART="artix_crypt"
 
@@ -105,6 +108,25 @@ updatemirrors(){
 	installpkg "pacman-contrib"
 	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup
 	rankmirrors -v -n 5 /etc/pacman.d/mirrorlist-backup > /etc/pacman.d/mirrorlist
+}
+
+basestrapping(){
+	whiptail --title "Installation" --infobox "Strapping \`$1\` ($n of $total) to /mnt. $1 $2" 9 70
+	basestrap -i /mnt "$1"
+}
+
+installloop(){
+	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) ||
+		curl -Ls "$progsfile" | sed '/^#/d' >/tmp/progs.csv
+	total=$(wc -l </tmp/progs.csv)
+	while IFS=, read -r tag program comment; do
+		n=$((n + 1))
+		echo "$comment" | grep -q "^\".*\"$" &&
+			comment="$(echo "$comment" | sed -E "s/(^\"|\"$)//g")"
+		case "$tag" in
+		*) basestrapping "$program" "$comment" ;;
+		esac
+	done </tmp/progs.csv
 }
 
 ### THE ACTUAL SCRIPT ###

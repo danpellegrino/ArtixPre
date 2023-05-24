@@ -1,0 +1,13 @@
+#TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
+,base,"minimal package set to define a basic Arch Linux installation."
+,base-devel,"basic tools to build Arch Linux packages."
+,runit,"a suite of tools which provides an init (PID 1) as well as daemontools-compatible process supervision framework, along with utilites which streamline creation and maintenance of services."
+,elogind-runit,"a logind patched not to demand PID1 privileges. It's the default user login and seat manager in Artix."
+,linux,"the Linux kernel and modules."
+,linux-firmware,"firmware files for Linux."
+,grub,"GNU GRand Unified Bootloader."
+,networkmanager,"Network connection manager and user applications."
+,networkmanager-runit,"to make networkmanager work with the runit init system."
+,cryptsetup,"Userspace setup tool for transparent encryption of block devices using dm-crypt."
+,lvm2,"Logical Volume Manager 2 utilities."
+,lvm2-runit,"to make lvm2 work with the runit init system."
