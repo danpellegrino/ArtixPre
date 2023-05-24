@@ -107,7 +107,7 @@ getrootpass() {
 getuserandpass() {
 	# Prompts user for new username an password.
 	username=$(whiptail --inputbox "First, please enter a name for the user account." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
-	while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
+	while ! echo "$username" | grep -q "^[a-z_][a-z0-9_-]*$"; do
 		username=$(whiptail --nocancel --inputbox "Username not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
 	done
 	userpass1=$(whiptail --nocancel --passwordbox "Enter a password for that user." 10 60 3>&1 1>&2 2>&3 3>&1)
