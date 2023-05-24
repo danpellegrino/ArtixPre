@@ -147,7 +147,26 @@ setlocale(){
 }
 
 sethostname(){
-	echo $HOSTNAME > /mnt/etc/hostname
+	echo "$HOSTNAME" > /mnt/etc/hostname
+
+cat > /mnt/etc/hosts <<HOSTS
+127.0.0.1      localhost
+::1            localhost
+127.0.1.1      $HOSTNAME.localdomain     $HOSTNAME
+HOSTS
+}
+
+encrypthooks(){
+	sed -i 's/^\(HOOKS=["(]base .*\) filesystems \(.*\)$/\1 encrypt lvm2 filesystems \2/g' /mnt/etc/mkinitcpio.conf
+
+	artix-chroot /mnt mkinitcpio -p linux
+}
+
+generatefstab(){
+	# clear
+	genfstab -U /mnt >> /mnt/etc/fstab
+
+	sleep 3
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -186,3 +205,13 @@ settimezone # Setting timezone
 setlocale # Setting locale
 
 sethostname # Setting hostname
+
+# Enable the network manager
+ln -s /mnt/etc/runit/sv/NetworkManager /mnt/etc/runit/runsvdir/current
+
+# Setup Root Password
+artix-chroot /mnt passwd
+
+encrypthooks # Sets up encrypt + lvm2 hooks
+
+generatefstab # Generates fstab file
