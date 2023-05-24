@@ -5,7 +5,7 @@
 # License: GNU GPLv3
 
 ### PROGRAMS FILE (CONTAINS ALL PROGRAMS THAT WILL BE INSTALLED) ###
-
+progsfile="https://raw.githubusercontent.com/danpellegrino/ArtixPre/main/progs.csv"
 
 ### VOLUME GROUP VARIABLES ###
 CRYPT_PART="artix_crypt"
