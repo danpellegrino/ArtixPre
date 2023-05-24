@@ -271,9 +271,9 @@ wipedisk
 
 getencryptionpass
 
-getrootpass
+#getrootpass
 
-getuserandpass
+#getuserandpass
 
 formatdisk
 
@@ -293,10 +293,10 @@ sethostname # Setting hostname
 artix-chroot /mnt ln -s /etc/runit/sv/NetworkManager /etc/runit/runsvdir/current
 
 # Setup Root Password
-setrootpass
-#artix-chroot /mnt passwd
+#setrootpass
+artix-chroot /mnt passwd
 
-adduserandpass # Adds user entered earlier
+#adduserandpass # Adds user entered earlier
 
 encrypthooks # Sets up encrypt + lvm2 hooks
 
