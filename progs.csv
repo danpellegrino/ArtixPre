@@ -12,3 +12,4 @@
 ,lvm2,"Logical Volume Manager 2 utilities."
 ,lvm2-runit,"to make lvm2 work with the runit init system."
 ,efibootmgr,"Linux user-space application to modify the EFI Boot Manager."
+,mkinitcpio,"modular initramfs image creation utility."
