@@ -120,14 +120,17 @@ getuserandpass() {
 }
 
 encryptdisk(){
-	echo -n $encryptpass1 | cryptsetup luksFormat /dev/$device"2" - # User may enter their encryption password
+	whiptail --title "Encryption" \
+		--msgbox "Encrypting /dev/$device!" 13 50
+
+	echo -n $encryptpass1 | cryptsetup luksFormat /dev/$device"2" -
 }
 
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
 	mkfs.fat -F32 /dev/$device"1"
 	encryptdisk
-	echo $encryptpass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART - # User will enter encryption password
+	echo $encryptpass1 | cryptsetup luksOpen /dev/$device"2" $CRYPT_PART -
 	unset encryptpass1 encryptpass2
 	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
@@ -199,7 +202,7 @@ setrootpass() {
 	# Setting root password
 	whiptail --infobox "Seeting root password" 7 50
 
-	artix-chroot /mnt echo "root:$rootpass1" | chpasswd
+	artix-chroot /mnt echo "$rootpass1" | passwd
 	unset rootpass1 rootpass2
 }
 
@@ -209,7 +212,7 @@ adduserandpass() {
 	whiptail --infobox "Adding user \"$username\"..." 7 50
 
 	artix-chroot /mnt useradd -G wheel "$username" >/dev/null 2>&1 ||
-	artix-chroot /mnt echo "$username:$userpass1" | chpasswd
+	artix-chroot /mnt echo "$userpass1" | passwd $username
 	unset userpass1 userpass2
 }
 
@@ -235,6 +238,12 @@ setupgrub(){
 	mkdir /mnt/boot/efi
 	artix-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
 	artix-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+
+finalize() {
+	whiptail --title "All done!" \
+		--msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and you should now have an encrypted Artix system!\\n\\n.t Daniel" 13 80
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -293,3 +302,5 @@ encrypthooks # Sets up encrypt + lvm2 hooks
 generatefstab # Generates fstab file
 
 setupgrub # Sets up grub with encrypted partitions
+
+finalize # Final comments
