@@ -4,6 +4,17 @@
 # by Daniel Pellegrino
 # License: GNU GPLv3
 
+### VOLUME GROUP VARIABLES ###
+CRYPT_PART="artix_crypt"
+
+# PARTITION SIZES (You can edit these if desired)
+EFI_SIZE=512M      # EFI applies to GPT disklabel
+
+# EXTRA (You can edit these if desired)
+TIMEZONE='America/New_York'
+LOCALE="en_US.UTF-8"
+KEYBOARD="us"
+
 ### FUNCTIONS ###
 
 efi_boot_mode(){
@@ -60,6 +71,16 @@ preinstallmsg() {
 	}
 }
 
+wipedisk(){
+	wipefs -a /dev/$device[1-9]* # wipe old partitions
+	wipefs -a /dev/$device       # wipe the disk itself
+	parted /dev/$device          # create new partitions
+	wipefs -a /dev/$device[1-9]* # wipe the new partitions, just in case
+}
+
+formatdisk(){
+	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/sda
+}
 
 ### THE ACTUAL SCRIPT ###
 
@@ -81,3 +102,9 @@ setupdisk || error "Error selecting disk."
 
 # Last chance for user to back out before install.
 preinstallmsg || error "User exited."
+
+# Wipe the selected disk
+wipedisk || error "Wiping of disk failed."
+
+# Format the selected disk
+formatdisk || error "Formatting of disk failed."
