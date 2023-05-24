@@ -138,4 +138,4 @@ formatdisk
 mountdisk
 
 # Update the best mirrors
-updatemirrors
+#updatemirrors
