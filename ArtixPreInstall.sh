@@ -17,6 +17,7 @@ EFI_SIZE=512M      # EFI applies to GPT disklabel
 TIMEZONE='America/New_York'
 LOCALE="en_US.UTF-8"
 KEYBOARD="us"
+HOSTNAME="artix"
 
 ### FUNCTIONS ###
 
@@ -128,6 +129,27 @@ installloop(){
 	basestrap /mnt $progs
 }
 
+settimezone(){
+	artix-chroot /mnt ln -s /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+	artix-chroot /mnt hwclock --systohc
+}
+
+setlocale(){
+
+	LOCALE=${LOCALE:="en_US.UTF-8"}
+	sleep 2
+
+	arch-chroot /mnt sed -i "s/#$LOCALE/$LOCALE/g" /etc/locale.gen
+	arch-chroot /mnt locale-gen
+
+	echo "export LANG=$LOCALE" > /mnt/etc/locale.conf 
+	echo "export LC_COLLATE=\"C\"" >> /mnt/etc/locale.conf
+}
+
+sethostname(){
+	echo $HOSTNAME > /mnt/etc/hostname
+}
+
 ### THE ACTUAL SCRIPT ###
 
 # Download libnewt (to use whiptail)
@@ -149,17 +171,16 @@ setupdisk || error "Error selecting disk."
 # Last chance for user to back out before install.
 preinstallmsg || error "User exited."
 
-# Wipe the selected disk
 wipedisk
 
-# Format the selected disk
 formatdisk
 
-# Mount the selected disk
 mountdisk
 
-# Update the best mirrors
-updatemirrors
+updatemirrors # Update the best mirrors
 
-# Perform Installation
-installloop
+installloop # Perform Installation
+
+settimezone # Setting timezone
+
+sethostname # Setting hostname
