@@ -211,8 +211,7 @@ adduserandpass() {
 	# Adds user `$username` with password $userpass1.
 	whiptail --infobox "Adding user \"$username\"..." 7 50
 
-	artix-chroot /mnt useradd -G wheel "$username" >/dev/null 2>&1 ||
-	artix-chroot /mnt echo "$userpass1" | passwd $username
+	artix-chroot /mnt useradd -G wheel -p "$userpass1" "$username"
 	unset userpass1 userpass2
 }
 
