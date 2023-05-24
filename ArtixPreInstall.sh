@@ -161,3 +161,6 @@ mountdisk
 
 # Update the best mirrors
 #updatemirrors
+
+# Perform Installation
+installloop
