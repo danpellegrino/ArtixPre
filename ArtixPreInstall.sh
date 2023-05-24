@@ -125,7 +125,7 @@ installloop(){
 		esac
 	done </tmp/progs.csv
 
-	echo $progs
+	basestrap -i /mnt $progs
 }
 
 ### THE ACTUAL SCRIPT ###
