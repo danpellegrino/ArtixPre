@@ -202,7 +202,7 @@ setrootpass() {
 	# Setting root password
 	whiptail --infobox "Seeting root password" 7 50
 
-	artix-chroot /mnt echo "$rootpass1" | passwd
+	artix-chroot /mnt echo -n "$rootpass1" | passwd
 	unset rootpass1 rootpass2
 }
 
@@ -211,7 +211,8 @@ adduserandpass() {
 	# Adds user `$username` with password $userpass1.
 	whiptail --infobox "Adding user \"$username\"..." 7 50
 
-	artix-chroot /mnt useradd -G wheel -p "$userpass1" "$username"
+	artix-chroot /mnt useradd -G wheel "$username"
+	artix-chroot /mnt echo -n "$userpass1" | passwd $username
 	unset userpass1 userpass2
 }
 
@@ -270,9 +271,9 @@ wipedisk
 
 getencryptionpass
 
-#getrootpass
+getrootpass
 
-#getuserandpass
+getuserandpass
 
 formatdisk
 
@@ -292,10 +293,10 @@ sethostname # Setting hostname
 artix-chroot /mnt ln -s /etc/runit/sv/NetworkManager /etc/runit/runsvdir/current
 
 # Setup Root Password
-#setrootpass
-artix-chroot /mnt passwd
+setrootpass
+#artix-chroot /mnt passwd
 
-#adduserandpass # Adds user entered earlier
+adduserandpass # Adds user entered earlier
 
 encrypthooks # Sets up encrypt + lvm2 hooks
 
