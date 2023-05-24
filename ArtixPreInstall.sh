@@ -78,8 +78,16 @@ wipedisk(){
 	wipefs -a /dev/$device[1-9]* # wipe the new partitions, just in case
 }
 
+encryptdisk(){
+	echo -e "YES" | cryptsetup luksFormat /dev/$device2 # User may enter their encryption password
+}
+
 formatdisk(){
 	echo -e "o\nn\np\n1\n\n+$EFI_SIZE\nn\np\n2\n\n\nw" | fdisk /dev/$device
+	mkfs.fat -F32 /dev/$device1
+	encryptdisk
+	cryptsetup open /dev/$device2 $CRYPT_PART # User will enter encryption password
+	mkfs.btrfs /dev/mapper/$CRYPT_PART
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -104,7 +112,7 @@ setupdisk || error "Error selecting disk."
 preinstallmsg || error "User exited."
 
 # Wipe the selected disk
-wipedisk || error "Wiping of disk failed."
+wipedisk
 
 # Format the selected disk
-formatdisk || error "Formatting of disk failed."
+formatdisk
