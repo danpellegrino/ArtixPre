@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# Post Artix Minimal Install Commands
+
+### VARIABLES ###
+
+NAME="daniel"
+
+DRIVERS="nvidia"
+
+DWMCONFIG="https://github.com/danpellegrino/dwm"
+STCONFIG="https://github.com/danpellegrino/st"
+DMENUCONFIG="https://github.com/danpellegrino/dmenu"
+
+### FUNCTIONS ###
+
+setupuser(){
+	useradd -m -g wheel "$NAME"
+	passwd "$NAME"
+}
+
+editpermissions(){
+	sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+}
+
+enableservices(){
+	# Network Service
+	ln -s /etc/runit/sv/bluetoothd /run/runit/service/bluetoothd
+
+	# Printing Service
+	ln -s /etc/runit/sv/cupsd /run/runit/service/cupsd
+}
+
+driverinstall(){
+	pacman -S "$DRIVERS"
+}
+
+setupxorg(){
+	pacman -S xorg-server xorg-xinit libx11 libxft libxinerama noto-fonts
+}
+
+setupenvironment(){
+	pacman -S git
+
+	git clone "$DWMCONFIG"
+	git clone "$STCONFIG"
+	git clone "$DMENUCONFIG"
+
+
+	# NOTE
+	# Compile all packages
+	
+	# template for xinitrc can be found at /etc/X11/xinit/xinitrc
+	# you'll have to remove all the 5 lines with xterm related things at the bottom though
+	echo "exec dwm" >> /home/$NAME/.xinitrc
+
+	echo "startx" >> /home/$NAME/.bash_profile
+}
+
+### ACTUAL SCRIPT ### 
+
+setupuser
+
+editpermissions
+
+driverinstall
+
+setupxorg
+
+setupenvironment
+
+### PACKAGES INSTALLED AFTER ###
+# xorg-xrandr; used for configuring monitor resolutions, refresh rate, etc. through command-line
+# G https://github.com/Morganamilo/paru; AUR helper
+# A librewolf-bin; browser
+#
