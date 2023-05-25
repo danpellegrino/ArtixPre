@@ -24,11 +24,21 @@ editpermissions(){
 }
 
 enableservices(){
+	
 	# Network Service
-	ln -s /etc/runit/sv/bluetoothd /run/runit/service/bluetoothd
+	pacman -S networkmanager networkmanager-runit
+	ln -s /etc/runit/sv/bluetoothd /run/runit/service/
+	sv start networkmanager
 
 	# Printing Service
-	ln -s /etc/runit/sv/cupsd /run/runit/service/cupsd
+	pacman -S cups cups-runit
+	ln -s /etc/runit/sv/cupsd /run/runit/service/
+	sv start cupsd
+
+	# Cron Jobs
+	pacman -S cronie cronie-runit
+	ln -s /etc/runit/sv/cronie /run/runit/service/
+	sv start cronie
 }
 
 driverinstall(){
@@ -71,7 +81,5 @@ setupenvironment
 
 ### PACKAGES INSTALLED AFTER ###
 # xorg-xrandr; used for configuring monitor resolutions, refresh rate, etc. through command-line
-# G https://github.com/Morganamilo/paru; AUR helper
+# G https://github.com/Morganamilo/paru ; AUR helper
 # A librewolf-bin; browser
-# A grub-btrfs; boot into btrfs backups from grub
-# snapper; A tool for managing BTRFS and LVM snapshots.
