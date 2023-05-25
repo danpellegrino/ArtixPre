@@ -87,3 +87,10 @@ setupenvironment
 # A timeshift;
 # A grub-btrfs
 # Now anytime timeshift creates a backup run 'grub-mkconfig -o /boot/grub/grub.cfg' and it will create a snapshot on grubs boot screen
+#
+# Extra
+# wireplumber
+# pipewire-pulse
+# pavucontrol
+# openssh
+# neofetch
