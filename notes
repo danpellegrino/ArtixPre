@@ -96,3 +96,7 @@ setupenvironment
 # neofetch
 # vim
 # neovim
+# arandr
+# xclip
+#
+# I set up auto login in /etc/runit/sv/agetty-tty1/conf
