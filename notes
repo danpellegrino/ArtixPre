@@ -73,4 +73,5 @@ setupenvironment
 # xorg-xrandr; used for configuring monitor resolutions, refresh rate, etc. through command-line
 # G https://github.com/Morganamilo/paru; AUR helper
 # A librewolf-bin; browser
-#
+# A grub-btrfs; boot into btrfs backups from grub
+# snapper; A tool for managing BTRFS and LVM snapshots.
