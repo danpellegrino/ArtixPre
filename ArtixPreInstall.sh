@@ -144,14 +144,14 @@ mountdisk(){
 	btrfs su cr /mnt/@var
 	umount /mnt
 	mount -o compress=zstd:1,noatime,subvol=@ /dev/mapper/$CRYPT_PART /mnt
-	mkdir -p /mnt/{boot/efi,home,.snapshots,var}
+	mkdir -p /mnt/{boot,home,.snapshots,var}
 
 	mount -o compress=zstd:1,noatime,subvol=@home /dev/mapper/$CRYPT_PART /mnt/home
 	mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/mapper/$CRYPT_PART /mnt/.snapshots
 	mount -o compress=zstd:1,noatime,subvol=@var /dev/mapper/$CRYPT_PART /mnt/var
 
 
-	mount /dev/$device"1" /mnt/boot/efi
+	mount /dev/$device"1" /mnt/boot/
 }
 
 unmountdisk(){
@@ -248,8 +248,7 @@ setupgrub(){
 
 	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"/GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet cryptdevice=UUID='"$cryptdevice"':cryptlvm root=UUID='"$rootdevice"'\"/g' /mnt/etc/default/grub
 
-	mkdir /mnt/boot/efi
-	artix-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
+	artix-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=grub
 	artix-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 }
 
