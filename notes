@@ -108,3 +108,19 @@ setupenvironment
 #
 # made a script to connect my headphones called connect_headphones in ~/.local/bin/
 # ^ had to add ~/.local/bin into my $PATH in ~/.bashrc
+#
+# zsh
+# zsh-completions
+# set up .xinitrc, .xprofile, etc.. into ~/.config
+# found -> https://unix.stackexchange.com/questions/672448/how-can-i-change-the-location-of-xinitrc-and-zsh-files
+# same with .zinitrc and .zprofile
+# G dwmblocks
+# 
+# Had to edit bios clock since it was off by ~4 hours
+#
+# picom
+# fzf
+# xorg-xset
+# unzip
+#
+# 'JetBrainsMono Nerd Font' from https://www.nerdfonts.com/font-downloads
