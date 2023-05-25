@@ -81,5 +81,9 @@ setupenvironment
 
 ### PACKAGES INSTALLED AFTER ###
 # xorg-xrandr; used for configuring monitor resolutions, refresh rate, etc. through command-line
+# btrfs-progs; btrfs utilities
 # G https://github.com/Morganamilo/paru ; AUR helper
 # A librewolf-bin; browser
+# A timeshift;
+# A grub-btrfs
+# Now anytime timeshift creates a backup run 'grub-mkconfig -o /boot/grub/grub.cfg' and it will create a snapshot on grubs boot screen
