@@ -100,3 +100,11 @@ setupenvironment
 # xclip
 #
 # I set up auto login in /etc/runit/sv/agetty-tty1/conf
+#
+# feh
+# bluez
+# bluez-runit
+# bluez-utils
+#
+# made a script to connect my headphones called connect_headphones in ~/.local/bin/
+# ^ had to add ~/.local/bin into my $PATH in ~/.bashrc
