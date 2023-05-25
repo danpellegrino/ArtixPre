@@ -230,6 +230,8 @@ adduserandpass() {
 }
 
 encrypthooks(){
+	sed -i 's/MODULES=()/MODULES=(btrfs)/g' /mnt/etc/mkinitcpio.conf
+
 	sed -i 's/^\(HOOKS=["(]base .*\) filesystems \(.*\)$/\1 encrypt lvm2 filesystems \2/g' /mnt/etc/mkinitcpio.conf
 
 	artix-chroot /mnt mkinitcpio -p linux
