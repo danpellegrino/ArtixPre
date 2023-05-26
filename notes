@@ -131,3 +131,5 @@ setupenvironment
 # os-prober
 #
 # installed starship with curl -sS https://starship.rs/install.sh | sh
+#
+# A discord_arch_electron
