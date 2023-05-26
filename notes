@@ -180,3 +180,4 @@ setupenvironment
 # pacman-key --populate archlinux'
 #
 # A discord_arch_electron
+# steam -> lib32-nvidia-utils (all from lib32 repo)
