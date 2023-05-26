@@ -124,3 +124,10 @@ setupenvironment
 # unzip
 #
 # 'JetBrainsMono Nerd Font' from https://www.nerdfonts.com/font-downloads
+#
+# added multimedia + volume keys to dwm
+#
+# playerctl
+# os-prober
+# A starship-git
+# cmake
