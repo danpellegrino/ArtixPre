@@ -129,5 +129,5 @@ setupenvironment
 #
 # playerctl
 # os-prober
-# A starship-git
-# cmake
+#
+# installed starship with curl -sS https://starship.rs/install.sh | sh
