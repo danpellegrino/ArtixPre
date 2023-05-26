@@ -132,4 +132,51 @@ setupenvironment
 #
 # installed starship with curl -sS https://starship.rs/install.sh | sh
 #
+# enabled multilib (lib32 in artix)
+# /etc/pacman.conf
+#
+# ### UNCOMMENT(/etc/pacman.conf) ### 
+# [lib32]
+# Include = /etc/pacman.d/mirrorlist
+#
+# ### APPEND(/etc/pacman.conf) ### 
+# [universe]
+# Server = https://universe.artixlinux.org/$arch
+# Server = https://mirror1.artixlinux.org/universe/$arch
+# Server = https://mirror.pascalpuffke.de/artix-universe/$arch
+# Server = https://mirrors.qontinuum.space/artixlinux-universe/$arch
+# Server = https://mirror1.cl.netactuate.com/artix/universe/$arch
+# Server = https://ftp.crifo.org/artix-universe/$arch
+# Server = https://artix.sakamoto.pl/universe/$arch
+#
+# sudo pacman-Syu
+# artix-archlinux-support
+# 
+# ### APPEND(/etc/pacman.conf) ###
+# #[testing]
+# #Include = /etc/pacman.d/mirrorlist-arch
+#
+#
+# [extra]
+# Include = /etc/pacman.d/mirrorlist-arch
+#
+#
+# #[community-testing]
+# #Include = /etc/pacman.d/mirrorlist-arch
+#
+#
+# [community]
+# Include = /etc/pacman.d/mirrorlist-arch
+#
+#
+# #[multilib-testing]
+# #Include = /etc/pacman.d/mirrorlist-arch
+#
+#
+# [multilib]
+# Include = /etc/pacman.d/mirrorlist-arch
+#
+# sudo pacman -Syu
+# pacman-key --populate archlinux'
+#
 # A discord_arch_electron
