@@ -205,3 +205,13 @@ setupenvironment
 # added QT_QPA_PLATFORMTHEME=qt5ct to /etc/environment by following https://unix.stackexchange.com/questions/680483/how-to-add-qt-qpa-platformtheme-qt5ct-environment-variable-in-arch-linux 
 #
 # nsxiv -- minimal image viewer
+# xdg-mime default nsxiv.desktop image/png
+# xdg-mime default nsxiv.desktop image/jpeg
+# xdg-mime default nsxiv.desktop image/jpg
+# xdg-mime default nsxiv.desktop image/gif
+# xdg-mime default nsxiv.desktop image/webp
+#
+# NOTE FOR GIFs I DID THE FOLLOWING FOR pcmanfm
+# download any gif file
+# right click > properties > open with > customize > custom command line > under 'command line to execute:' > nsxiv -a
+# man-db -- manual pages
