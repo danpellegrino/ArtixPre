@@ -124,11 +124,16 @@ setupenvironment
 # unzip
 #
 # 'JetBrainsMono Nerd Font' from https://www.nerdfonts.com/font-downloads
+# 'Hack Nerd Font'
+# 'DejaVuSansM Nerd Font'
+# 'DroidSansM Nerd Font'
+# 'Cousine Nerd Font'
+# 'Clear Sans' from https://www.fontsquirrel.com/fonts/clear-sans
 #
 # added multimedia + volume keys to dwm
 #
-# playerctl
-# os-prober
+# playerctl -- used for dwm media keys
+# os-prober -- used to recognize windows partition
 #
 # installed starship with curl -sS https://starship.rs/install.sh | sh
 #
@@ -181,3 +186,22 @@ setupenvironment
 #
 # A discord_arch_electron
 # steam -> lib32-nvidia-utils (all from lib32 repo)
+#
+# gimp -- photo editing
+# ranger -- terminal file browser
+# emacs -- text editor
+# pcmanfm - gui file browser
+#
+# lxappearance -- used for gtk theme
+# using this theme https://github.com/Fausto-Korpsvart/Tokyo-Night-GTK-Theme
+# https://store.kde.org/p/1681315
+# Tokyonight-Storm-B.zip -- theme
+# put in ~/.themes
+# used Clear Sans 11 font
+#
+#
+# qt5ct -- used for qt theme
+# using this theme
+# added QT_QPA_PLATFORMTHEME=qt5ct to /etc/environment by following https://unix.stackexchange.com/questions/680483/how-to-add-qt-qpa-platformtheme-qt5ct-environment-variable-in-arch-linux 
+#
+# nsxiv -- minimal image viewer
