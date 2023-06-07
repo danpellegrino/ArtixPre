@@ -193,12 +193,18 @@ setupenvironment
 # pcmanfm - gui file browser
 #
 # lxappearance -- used for gtk theme
+# THEME
+# --
 # using this theme https://github.com/Fausto-Korpsvart/Tokyo-Night-GTK-Theme
 # https://store.kde.org/p/1681315
 # Tokyonight-Storm-B.zip -- theme
 # put in ~/.themes
 # used Clear Sans 11 font
-#
+# ICONS
+# --
+# using these icons https://github.com/bikass/kora
+# https://www.gnome-look.org/p/1256209/
+# put in ~/.icons
 #
 # qt5ct -- used for qt theme
 # using this theme
