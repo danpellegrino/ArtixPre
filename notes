@@ -221,3 +221,14 @@ setupenvironment
 # download any gif file
 # right click > properties > open with > customize > custom command line > under 'command line to execute:' > nsxiv -a
 # man-db -- manual pages
+#
+# FIXED PIPEWIRE ISSUE
+# Found Solution: https://www.reddit.com/r/artixlinux/comments/y75r1b/wireplumber_doesnt_start/
+# copied /usr/share/pipewire/pipewire.conf to ~/.config/pipewire/pipewire.conf
+# altered context.exec with solution by CatchDramatic878
+# add
+# context.exec = [
+# #{ path = <program-name> [ args = "<arguments>" ] }
+# { path = "/usr/bin/wireplumber" args = "" }
+# { path = "/usr/bin/pipewire" args = "-c pipewire-pulse.conf" }
+# ]
