@@ -232,3 +232,5 @@ setupenvironment
 # { path = "/usr/bin/wireplumber" args = "" }
 # { path = "/usr/bin/pipewire" args = "-c pipewire-pulse.conf" }
 # ]
+#
+# Added 'Humble New Tab Page' extension to Firefox
