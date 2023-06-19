@@ -274,3 +274,5 @@ setupenvironment
 #
 #
 # Also nordvpn login won't exactly work, continue with it though and once you're done copy the link at the "Continue" section and enter the following 'nordvpn login --callback "[LINK HERE"'
+#
+# stow
