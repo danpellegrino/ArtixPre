@@ -118,7 +118,6 @@ setupenvironment
 # 
 # Had to edit bios clock since it was off by ~4 hours
 #
-# picom
 # fzf
 # xorg-xset
 # unzip
@@ -234,3 +233,44 @@ setupenvironment
 # ]
 #
 # Added 'Humble New Tab Page' extension to Firefox
+#
+# mpv
+# yt-dlp
+#
+# newsboat
+# PUT ALL CONFIG FILES IN ~/.config/newsboat/
+# rm -r ~/.newsboat
+#
+# urlscan
+#
+# https://github.com/uditkarode/libxft-bgra
+# REQUIRED
+# xorg-util-macros
+#
+# I NEEDED TO CHANGE THE VERSION FOUND ISSUE HERE: https://github.com/uditkarode/libxft-bgra/issues/5
+# git clone https://github.com/uditkarode/libxft-bgra
+# cd libxft-bgra
+# sh autogen.sh --sysconfdir=/etc --prefix=/usr --mandir=/usr/share/man
+# sudo make install
+#
+# noto-fonts-emoji
+# otf-ipafont
+#
+#
+# picom-jonaburg-git A
+# Followed u/Departure-Silver explanation: https://www.reddit.com/r/dwm/comments/q9dns9/how_do_i_use_picomjonaburggit_with_dwm/
+# https://pastebin.com/SbwfuuJV
+# xorg-xprop
+# xorg-xwininfo
+# 
+# qbittorrent
+#
+# nordvpn-bin A
+# nordvpn-runit A
+#
+# NOTE: Found Solution Here [ https://www.reddit.com/r/nordvpn/comments/lb31r9/issues_with_nordvpn_in_linux/ ]
+# for some reason you have to run 'sudo chmod 777 /run/nordvpn/nordvpn.sock' to get it to work
+# don't forget with runit, ln -s stuff
+#
+#
+# Also nordvpn login won't exactly work, continue with it though and once you're done copy the link at the "Continue" section and enter the following 'nordvpn login --callback "[LINK HERE"'
